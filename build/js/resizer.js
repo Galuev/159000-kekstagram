@@ -90,11 +90,12 @@
 
       // Толщина линии.
       this._ctx.lineWidth = 6;
+      this._ctx.lineCap = "round";
       // Цвет обводки.
       this._ctx.strokeStyle = '#ffe753';
       // Размер штрихов. Первый элемент массива задает длину штриха, второй
       // расстояние между соседними штрихами.
-      this._ctx.setLineDash([15, 10]);
+      this._ctx.setLineDash([1, 10]);
       // Смещение первого штриха от начала линии.
       this._ctx.lineDashOffset = 7;
 
@@ -127,6 +128,36 @@
       // некорректно сработает даже очистка холста или нужно будет использовать
       // сложные рассчеты для координат прямоугольника, который нужно очистить.
       this._ctx.restore();
+
+
+      // MODULE-2 TASK-1 STARTS
+      var imgWidth = this._container.width;
+      var imgHeight = this._container.height;
+      var strokeWidth = this._ctx.lineWidth;
+      var cropSide = this._resizeConstraint.side;
+      var cropXleft = imgWidth / 2 - cropSide / 2;
+      var cropYtop = imgHeight / 2 - cropSide / 2;
+
+      var imgInfo = imgWidth + ' x ' + imgHeight;
+      var infoWidth = this._ctx.measureText(imgInfo);
+      var infoX = cropSide / 2 + infoWidth.width / 2;
+      var infoY = cropYtop - 10;
+
+      this._ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+      this._ctx.beginPath();
+      this._ctx.moveTo(0, 0);
+      this._ctx.lineTo(imgWidth, 0);
+      this._ctx.lineTo(imgWidth, imgHeight);
+      this._ctx.lineTo(0, imgHeight);
+      this._ctx.closePath(0, 0);
+      this._ctx.rect(cropXleft - strokeWidth, cropYtop - strokeWidth, cropSide + strokeWidth / 2, cropSide + strokeWidth / 2);
+      this._ctx.fill('evenodd');
+
+      this._ctx.fillStyle = "#ffffff";
+      this._ctx.font = "16px Arial";
+      this._ctx.fillText(imgInfo, infoX, infoY);
+      // MODULE-2 TASK-1 ENDS
+
     },
 
     /**
